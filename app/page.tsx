@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, type PointerEvent } from 'react'
 import { ArrowDownRight, ArrowUpRight, Check, Menu, MoveUpRight, X } from 'lucide-react'
 
 const projects = [
@@ -30,6 +30,18 @@ export default function Page() {
   }, [])
 
   const closeMenu = () => setMenuOpen(false)
+  const handleTilt = (event: PointerEvent<HTMLElement>) => {
+    const element = event.currentTarget
+    const bounds = element.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5
+    element.style.setProperty('--pointer-x', `${x * 16}px`)
+    element.style.setProperty('--pointer-y', `${y * 16}px`)
+  }
+  const resetTilt = (event: PointerEvent<HTMLElement>) => {
+    event.currentTarget.style.setProperty('--pointer-x', '0px')
+    event.currentTarget.style.setProperty('--pointer-y', '0px')
+  }
 
   return (
     <main className="site-shell">
@@ -47,7 +59,7 @@ export default function Page() {
       <section className="hero section-pad" id="top">
         <div className="hero-meta"><span>( 01 — 04 )</span><span>Based in India<br />Available worldwide</span></div>
         <div className="hero-copy"><p className="eyebrow reveal">UI/UX Designer <i>×</i> Front-End Developer</p><h1><span className="line reveal delay-1">I design digital</span><span className="line indent reveal delay-2">experiences</span><span className="line reveal delay-3">and build them <em>into reality.</em></span></h1></div>
-        <div className="hero-art" aria-label="Interactive design, code and motion panel"><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-card"><span>SC / 001</span><strong>Design<br /><i>in motion.</i></strong><small>Figma → React<br />Ideas → Interfaces</small></div><div className="art-cross">+</div></div>
+        <div className="hero-art" aria-label="Interactive design, code and motion panel" onPointerMove={handleTilt} onPointerLeave={resetTilt}><div className="art-orbit orbit-one" /><div className="art-orbit orbit-two" /><div className="art-card"><span>SC / 001</span><strong>Design<br /><i>in motion.</i></strong><small>Figma → React<br />Ideas → Interfaces</small></div><div className="art-cross">+</div></div>
         <div className="hero-footer"><p>Scroll to explore <ArrowDownRight size={17} /></p><div className="scroll-line" /><p className="hero-note">A designer who<br />knows how to code.</p></div>
       </section>
 
@@ -55,7 +67,7 @@ export default function Page() {
 
       <section className="marquee" aria-label="Areas of expertise"><div className="marquee-row"><span>UI/UX Design</span><b>✳</b><span>Front-End Development</span><b>✳</b><span>Interaction Design</span><b>✳</b><span>Creative Technology</span><b>✳</b></div><div className="marquee-row reverse"><span>Motion Design</span><b>✳</b><span>Visual Systems</span><b>✳</b><span>Digital Products</span><b>✳</b><span>Motion Design</span><b>✳</b></div></section>
 
-      <section className="work section-pad" id="work"><div className="section-label"><span>03 / Selected work</span><span>04 projects · 2024—26</span></div><div className="section-heading"><h2>Selected <em>work.</em></h2><p>A collection of things I&apos;ve designed, built and experimented with.</p></div><div className="project-list">{projects.map((project) => <article className="project-card" key={project.number}><div className={`project-visual ${project.className}`}><div className="visual-ui"><span>{project.number} / DIGITAL PRODUCT</span><div className="visual-window"><i /><i /><i /><strong>{project.title}</strong><div className="visual-bar" /><div className="visual-blocks"><b /><b /><b /></div></div></div><a className="view-pill" href={project.url} target={project.url.startsWith('#') ? undefined : '_blank'} rel={project.url.startsWith('#') ? undefined : 'noreferrer'}>View <ArrowUpRight size={15} /></a></div><div className="project-info"><div><span className="project-number">{project.number}</span><h3>{project.title}</h3><p>{project.description}</p></div><div className="project-meta"><span>{project.type}</span><span>{project.year}</span></div></div></article>)}</div></section>
+      <section className="work section-pad" id="work"><div className="section-label"><span>03 / Selected work</span><span>04 projects · 2024—26</span></div><div className="section-heading"><h2>Selected <em>work.</em></h2><p>A collection of things I&apos;ve designed, built and experimented with.</p></div><div className="project-list">{projects.map((project) => <article className="project-card" key={project.number}><div className={`project-visual ${project.className}`} onPointerMove={handleTilt} onPointerLeave={resetTilt}><div className="visual-ui"><span>{project.number} / DIGITAL PRODUCT</span><div className="visual-window"><i /><i /><i /><strong>{project.title}</strong><div className="visual-bar" /><div className="visual-blocks"><b /><b /><b /></div></div></div><a className="view-pill" href={project.url} target={project.url.startsWith('#') ? undefined : '_blank'} rel={project.url.startsWith('#') ? undefined : 'noreferrer'}>View <ArrowUpRight size={15} /></a></div><div className="project-info"><div><span className="project-number">{project.number}</span><h3>{project.title}</h3><p>{project.description}</p></div><div className="project-meta"><span>{project.type}</span><span>{project.year}</span></div></div></article>)}</div></section>
 
       <section className="about-band section-pad"><div className="about-display"><span>Designer mindset.</span><span className="outline">Developer hands.</span></div><div className="about-lower"><div className="portrait"><img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202026-10-25%20at%207.39.02%20PM-2fFsrMNCu3prgfK7KvJSesxooxAE2a.jpeg" alt="Siddhant wearing a black suit" /><span>xid<br />2026</span></div><div className="about-copy"><p>I care about the space where visual clarity meets technical possibility. Good work should feel obvious in hindsight — expressive, useful and made to last.</p><div className="stats"><div><strong>04<span>+</span></strong><small>Projects shipped</small></div><div><strong>02<span>+</span></strong><small>Years learning</small></div><div><strong>10<span>+</span></strong><small>Technologies</small></div></div></div></div></section>
 
