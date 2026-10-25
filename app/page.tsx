@@ -42,10 +42,14 @@ export default function Page() {
     event.currentTarget.style.setProperty('--pointer-x', '0px')
     event.currentTarget.style.setProperty('--pointer-y', '0px')
   }
+  const handleBackgroundPointer = (event: PointerEvent<HTMLElement>) => {
+    document.documentElement.style.setProperty('--cursor-x', `${event.clientX}px`)
+    document.documentElement.style.setProperty('--cursor-y', `${event.clientY}px`)
+  }
 
   return (
-    <main className="site-shell">
-      <div className="grain" aria-hidden="true" />
+    <main className="site-shell" onPointerMove={handleBackgroundPointer}>
+      <div className="grain" aria-hidden="true" /><div className="cursor-gradient" aria-hidden="true" />
       <header className={`nav-wrap ${scrolled ? 'nav-scrolled' : ''}`}>
         <a className="brand" href="#top" aria-label="Siddhant home">xid<span className="brand-dot">.</span></a>
         <nav className="desktop-nav" aria-label="Main navigation">
